@@ -13,29 +13,54 @@
 
   var picture = ['img/cards/gum-cedar.jpg', 'img/cards/gum-chile.jpg', 'img/cards/gum-eggplant.jpg', 'img/cards/gum-mustard.jpg', 'img/cards/gum-portwine.jpg', 'img/cards/gum-wasabi.jpg', 'img/cards/ice-eggplant.jpg', 'img/cards/ice-cucumber.jpg', 'img/cards/ice-garlic.jpg', 'img/cards/ice-italian.jpg', 'img/cards/ice-mushroom.jpg', 'img/cards/ice-pig.jpg', 'img/cards/marmalade-beer.jpg', 'img/cards/marmalade-caviar.jpg', 'img/cards/marmalade-corn.jpg', 'img/cards/marmalade-new-year.jpg', 'img/cards/marmalade-sour.jpg', 'img/cards/marshmallow-bacon.jpg', 'img/cards/marshmallow-beer.jpg', 'img/cards/marshmallow-shrimp.jpg', 'img/cards/marshmallow-spicy.jpg', 'img/cards/marshmallow-wine.jpg', 'img/cards/soda-bacon.jpg', 'img/cards/soda-celery.jpg', 'img/cards/soda-cob.jpg', 'img/cards/soda-garlic.jpg', 'img/cards/soda-peanut-grapes.jpg', 'img/cards/soda-russian.jpg'];
 
-
-// создает массив сгенерированный случайным образом - состав
-  function getContents() {
-    var contents = ['молоко', 'сливки', 'вода', 'пищевой краситель', 'патока', 'ароматизатор бекона', 'ароматизатор свинца', 'ароматизатор дуба, идентичный натуральному', 'ароматизатор картофеля', 'лимонная кислота', 'лимонная кислота', 'эмульгатор', 'консервант: сорбат калия', 'посолочная смесь: соль, нитрит натрия', 'ксилит', 'карбамид', 'вилларибо', 'виллабаджо'];
-    var amountElements = Math.round(Math.random() * 17);
-    var consist = [];
-    for (var i = 0; i < amountElements; i++) {
-      consist.push(' ' + contents[Math.round(Math.random() * 17)]);
+  // создает массив 26 картинок без повторов
+  function getPicture(sitems) {
+    var arrCopy = sitems.slice(0, sitems.length - 1);
+    var newArr = [];
+    for (var i = 0; i < 26; i++) {
+      var randInt = Math.floor(Math.random() * arrCopy.length);
+      newArr.push(arrCopy[randInt]);
+      arrCopy.splice(randInt, 1);
     }
-    return consist;
+    return newArr;
+  }
+  var newPictureArr = getPicture(picture);
+
+  var contents = ['молоко', 'сливки', 'вода', 'пищевой краситель', 'патока', 'ароматизатор бекона', 'ароматизатор свинца', 'ароматизатор дуба, идентичный натуральному', 'ароматизатор картофеля', 'лимонная кислота', 'загуститель', 'эмульгатор', 'консервант: сорбат калия', 'посолочная смесь: соль, нитрит натрия', 'ксилит', 'карбамид', 'вилларибо', 'виллабаджо'];
+
+  // функция создает массив случайных значений из другого массива со случайной длинной
+  function getConsist(sitems) {
+    // делаем копию массива элементов состава
+    var arrCopy = sitems.slice(0, sitems.length - 1);
+    // случайное количество элементов состава, которое будет у этого товара
+    var itemCount = Math.floor(Math.random() * sitems.length);
+    itemCount = itemCount > 0 ? itemCount : 1;
+    var newArr = [];
+    for (var i = 0; i < itemCount; i++) {
+      // берем случайное число
+      var randInt = Math.floor(Math.random() * arrCopy.length);
+      // если выпадает такое же число что и было на прошлой итерации, то он его не может добавить в массив newArr т.к. этот элемент уже удален из массива arrCopy
+      newArr.push(arrCopy[randInt]);
+      // удаляем уже выбранный элемент из скопированного массива
+      arrCopy.splice(randInt, 1);
+    }
+    // джойним и возвращаем строкой готовый случайный состав
+    return newArr.join(', ');
   }
 
-  function getIceAttribute(arr) {
+  // отдает случайное число в массиве
+  function getCandyAttribute(arr) {
     var randInt = Math.floor(Math.random() * arr.length);
     return arr[randInt];
   }
 
+  // добавляет в массив charArr все элементы
   function getCandy() {
     var charArr = [];
     for (var i = 0; i < cardsAmount; i++) {
       charArr.push({
-        name: getIceAttribute(name),
-        picture: getIceAttribute(picture),
+        name: getCandyAttribute(name),
+        picture: getCandyAttribute(newPictureArr),
         amount: Math.round(Math.random() * 20),
         price: Math.round(100 + (Math.random() * 1500)),
         weight: Math.round(30 + (Math.random() * 300)),
@@ -46,7 +71,7 @@
         nutritionFacts: {
           sugar: Boolean(Math.round(Math.random())),
           energy: Math.round(70 + (Math.random() * 500)),
-          contents: getContents(),
+          contents: getConsist(contents),
         },
       });
     }
@@ -55,6 +80,7 @@
 
   var candyCards = getCandy();
 
+  // создает карточку товара
   function renderCard(candyCard) {
     var cardElement = card.content.cloneNode(true);
 
@@ -92,10 +118,53 @@
     return cardElement;
   }
 
+  // добавляет карточку товара в DocumentFragment и добавляет на сайт
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < candyCards.length; i++) {
     fragment.appendChild(renderCard(candyCards[i]));
   }
   catalogCards.appendChild(fragment);
+
+
+  // --------------template--goods_card---------------------------------------
+
+
+  var goodCards = document.querySelector('.goods__cards');
+  var goodCardsEmpty = document.querySelector('.goods__card-empty');
+  goodCards.classList.remove('goods__cards--empty');
+  goodCardsEmpty.classList.add('visually-hidden');
+  var goodOrder = document.querySelector('#card-order');
+
+  var basketAmount = 3;
+
+  function getGoods() {
+    var goodArr = [];
+    for (var j = 0; j < basketAmount; j++) {
+      goodArr.push({
+        name: getCandyAttribute(name),
+        picture: getCandyAttribute(newPictureArr),
+        price: Math.round(100 + (Math.random() * 1500)),
+      });
+    }
+    return goodArr;
+  }
+
+  var goodsCard = getGoods();
+
+  function renderGoodCard(goodCard) {
+    var cardElement = goodOrder.content.cloneNode(true);
+
+    cardElement.querySelector('.card-order__title').textContent = goodCard.name;
+    cardElement.querySelector('.card-order__img').src = goodCard.picture;
+    cardElement.querySelector('.card-order__price').textContent = goodCard.price + ' ₽';
+
+    return cardElement;
+  }
+
+  var goodsFragment = document.createDocumentFragment();
+  for (var e = 0; e < goodsCard.length; e++) {
+    goodsFragment.appendChild(renderGoodCard(goodsCard[e]));
+  }
+  goodCards.appendChild(goodsFragment);
 
 })();
