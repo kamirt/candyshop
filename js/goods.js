@@ -7,8 +7,6 @@
   catalogCards.classList.remove('catalog__cards--load');
   catalogLoad.classList.add('visually-hidden');
 
-  var cardsAmount = 26;
-
   var name = ['Чесночные сливки', 'Огуречный педант', 'Молочная хрюша', 'Грибной шейк', 'Баклажановое безумие', 'Паприколу итальяно', 'Нинзя-удар васаби', 'Хитрый баклажан', 'Горчичный вызов', 'Кедровая липучка', 'Корманный портвейн', 'Чилийский задира', 'Беконовый взрыв', 'Арахис vs виноград', 'Сельдерейная душа', 'Початок в бутылке', 'Чернющий мистер чеснок', 'Раша федераша', 'Кислая мина', 'Кукурузное утро', 'Икорный фуршет', 'Новогоднее настроение', 'С пивком потянет', 'Мисс креветка', 'Бесконечный взрыв', 'Невинные винные', 'Бельгийское пенное', 'Острый язычок'];
 
   var picture = ['img/cards/gum-cedar.jpg', 'img/cards/gum-chile.jpg', 'img/cards/gum-eggplant.jpg', 'img/cards/gum-mustard.jpg', 'img/cards/gum-portwine.jpg', 'img/cards/gum-wasabi.jpg', 'img/cards/ice-eggplant.jpg', 'img/cards/ice-cucumber.jpg', 'img/cards/ice-garlic.jpg', 'img/cards/ice-italian.jpg', 'img/cards/ice-mushroom.jpg', 'img/cards/ice-pig.jpg', 'img/cards/marmalade-beer.jpg', 'img/cards/marmalade-caviar.jpg', 'img/cards/marmalade-corn.jpg', 'img/cards/marmalade-new-year.jpg', 'img/cards/marmalade-sour.jpg', 'img/cards/marshmallow-bacon.jpg', 'img/cards/marshmallow-beer.jpg', 'img/cards/marshmallow-shrimp.jpg', 'img/cards/marshmallow-spicy.jpg', 'img/cards/marshmallow-wine.jpg', 'img/cards/soda-bacon.jpg', 'img/cards/soda-celery.jpg', 'img/cards/soda-cob.jpg', 'img/cards/soda-garlic.jpg', 'img/cards/soda-peanut-grapes.jpg', 'img/cards/soda-russian.jpg'];
@@ -44,7 +42,7 @@
   }
 
   // добавляет в массив charArr все элементы
-  function getCandy() {
+  function getCandy(cardsAmount) {
     var charArr = [];
     for (var i = 0; i < cardsAmount; i++) {
       charArr.push({
@@ -67,7 +65,7 @@
     return charArr;
   }
 
-  var candyCards = getCandy();
+  var candyCards = getCandy(26);
 
   // создает карточку товара
   function renderCard(candyCard) {
@@ -114,7 +112,6 @@
   }
   catalogCards.appendChild(fragment);
 
-
   // --------------template--goods_card---------------------------------------
 
 
@@ -124,21 +121,7 @@
   goodCardsEmpty.classList.add('visually-hidden');
   var goodOrder = document.querySelector('#card-order');
 
-  var basketAmount = 3;
-
-  function getGoods() {
-    var goodArr = [];
-    for (var j = 0; j < basketAmount; j++) {
-      goodArr.push({
-        name: getCandyAttribute(name),
-        picture: getCandyAttribute(pictures),
-        price: Math.round(100 + (Math.random() * 1500)),
-      });
-    }
-    return goodArr;
-  }
-
-  var goodsCard = getGoods();
+  var goodsCard = getCandy(3);
 
   function renderGoodCard(goodCard) {
     var cardElement = goodOrder.content.cloneNode(true);
