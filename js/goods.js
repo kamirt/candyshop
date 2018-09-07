@@ -13,27 +13,16 @@
 
   var picture = ['img/cards/gum-cedar.jpg', 'img/cards/gum-chile.jpg', 'img/cards/gum-eggplant.jpg', 'img/cards/gum-mustard.jpg', 'img/cards/gum-portwine.jpg', 'img/cards/gum-wasabi.jpg', 'img/cards/ice-eggplant.jpg', 'img/cards/ice-cucumber.jpg', 'img/cards/ice-garlic.jpg', 'img/cards/ice-italian.jpg', 'img/cards/ice-mushroom.jpg', 'img/cards/ice-pig.jpg', 'img/cards/marmalade-beer.jpg', 'img/cards/marmalade-caviar.jpg', 'img/cards/marmalade-corn.jpg', 'img/cards/marmalade-new-year.jpg', 'img/cards/marmalade-sour.jpg', 'img/cards/marshmallow-bacon.jpg', 'img/cards/marshmallow-beer.jpg', 'img/cards/marshmallow-shrimp.jpg', 'img/cards/marshmallow-spicy.jpg', 'img/cards/marshmallow-wine.jpg', 'img/cards/soda-bacon.jpg', 'img/cards/soda-celery.jpg', 'img/cards/soda-cob.jpg', 'img/cards/soda-garlic.jpg', 'img/cards/soda-peanut-grapes.jpg', 'img/cards/soda-russian.jpg'];
 
-  // создает массив 26 картинок без повторов
-  function getPicture(sitems) {
-    var arrCopy = sitems.slice(0, sitems.length - 1);
-    var newArr = [];
-    for (var i = 0; i < 26; i++) {
-      var randInt = Math.floor(Math.random() * arrCopy.length);
-      newArr.push(arrCopy[randInt]);
-      arrCopy.splice(randInt, 1);
-    }
-    return newArr;
-  }
-  var newPictureArr = getPicture(picture);
+  // создает массив неповторяющихся картинок
+  var pictures = getRandomArr(picture, 26);
 
   var contents = ['молоко', 'сливки', 'вода', 'пищевой краситель', 'патока', 'ароматизатор бекона', 'ароматизатор свинца', 'ароматизатор дуба, идентичный натуральному', 'ароматизатор картофеля', 'лимонная кислота', 'загуститель', 'эмульгатор', 'консервант: сорбат калия', 'посолочная смесь: соль, нитрит натрия', 'ксилит', 'карбамид', 'вилларибо', 'виллабаджо'];
 
   // функция создает массив случайных значений из другого массива со случайной длинной
-  function getConsist(sitems) {
+  function getRandomArr(sitems, itemCount) {
     // делаем копию массива элементов состава
     var arrCopy = sitems.slice(0, sitems.length - 1);
     // случайное количество элементов состава, которое будет у этого товара
-    var itemCount = Math.floor(Math.random() * sitems.length);
     itemCount = itemCount > 0 ? itemCount : 1;
     var newArr = [];
     for (var i = 0; i < itemCount; i++) {
@@ -45,7 +34,7 @@
       arrCopy.splice(randInt, 1);
     }
     // джойним и возвращаем строкой готовый случайный состав
-    return newArr.join(', ');
+    return newArr;
   }
 
   // отдает случайное число в массиве
@@ -60,7 +49,7 @@
     for (var i = 0; i < cardsAmount; i++) {
       charArr.push({
         name: getCandyAttribute(name),
-        picture: getCandyAttribute(newPictureArr),
+        picture: getCandyAttribute(pictures),
         amount: Math.round(Math.random() * 20),
         price: Math.round(100 + (Math.random() * 1500)),
         weight: Math.round(30 + (Math.random() * 300)),
@@ -71,7 +60,7 @@
         nutritionFacts: {
           sugar: Boolean(Math.round(Math.random())),
           energy: Math.round(70 + (Math.random() * 500)),
-          contents: getConsist(contents),
+          contents: getRandomArr(contents, Math.floor(Math.random() * contents.length)),
         },
       });
     }
@@ -104,7 +93,7 @@
       cardElement.querySelector('.card__characteristic').textContent = 'Без сахара' + '. ' + candyCard.nutritionFacts.energy + ' ккал';
     }
 
-    cardElement.querySelector('.card__composition-list').textContent = candyCard.nutritionFacts.contents;
+    cardElement.querySelector('.card__composition-list').textContent = candyCard.nutritionFacts.contents.join(', ');
 
     var ratings = ['one', 'two', 'three', 'four', 'five'];
     var rating = 'stars__rating--' + ratings[candyCard.rating.value - 1];
@@ -142,7 +131,7 @@
     for (var j = 0; j < basketAmount; j++) {
       goodArr.push({
         name: getCandyAttribute(name),
-        picture: getCandyAttribute(newPictureArr),
+        picture: getCandyAttribute(pictures),
         price: Math.round(100 + (Math.random() * 1500)),
       });
     }
