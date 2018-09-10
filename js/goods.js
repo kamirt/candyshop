@@ -110,7 +110,7 @@
     for (var i = 0; i < arrOfCandies.length; i++) {
       fragment.appendChild(renderFunc(arrOfCandies[i]));
     }
-  appendTo.appendChild(fragment);
+    appendTo.appendChild(fragment);
   }
 
   appendFragment(candyCards, catalogCards, renderCard);
