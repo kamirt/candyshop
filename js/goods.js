@@ -105,15 +105,15 @@
   }
 
   // добавляет карточку товара в DocumentFragment и добавляет на сайт
-  function appendFragment(arrOfCandies, appendTo) {
+  function appendFragment(arrOfCandies, appendTo, renderFunc) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < arrOfCandies.length; i++) {
-      fragment.appendChild(renderCard(arrOfCandies[i]));
+      fragment.appendChild(renderFunc(arrOfCandies[i]));
     }
   appendTo.appendChild(fragment);
   }
 
-  appendFragment(candyCards, catalogCards);
+  appendFragment(candyCards, catalogCards, renderCard);
 
   // --------------template--goods_card---------------------------------------
 
@@ -135,6 +135,6 @@
     return cardElement;
   }
 
-  appendFragment(goodsCard, goodCards);
+  appendFragment(goodsCard, goodCards, renderGoodCard);
 
 })();
