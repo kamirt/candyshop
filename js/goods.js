@@ -19,7 +19,7 @@
   // функция создает массив случайных значений из другого массива со случайной длинной
   function getRandomArr(sitems, itemCount) {
     // делаем копию массива элементов состава
-    var arrCopy = sitems.slice(0, sitems.length - 1);
+    var arrCopy = sitems.slice(0, sitems.length);
     // случайное количество элементов состава, которое будет у этого товара
     itemCount = itemCount > 0 ? itemCount : 1;
     var newArr = [];
@@ -31,7 +31,6 @@
       // удаляем уже выбранный элемент из скопированного массива
       arrCopy.splice(randInt, 1);
     }
-    // джойним и возвращаем строкой готовый случайный состав
     return newArr;
   }
 
@@ -47,7 +46,7 @@
     for (var i = 0; i < cardsAmount; i++) {
       charArr.push({
         name: getCandyAttribute(name),
-        picture: getCandyAttribute(pictures),
+        picture: pictures[i],
         amount: Math.round(Math.random() * 20),
         price: Math.round(100 + (Math.random() * 1500)),
         weight: Math.round(30 + (Math.random() * 300)),
@@ -106,14 +105,17 @@
   }
 
   // добавляет карточку товара в DocumentFragment и добавляет на сайт
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < candyCards.length; i++) {
-    fragment.appendChild(renderCard(candyCards[i]));
+  function appendFragment(arrOfCandies, appendTo) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < arrOfCandies.length; i++) {
+      fragment.appendChild(renderCard(arrOfCandies[i]));
+    }
+  appendTo.appendChild(fragment);
   }
-  catalogCards.appendChild(fragment);
+
+  appendFragment(candyCards, catalogCards);
 
   // --------------template--goods_card---------------------------------------
-
 
   var goodCards = document.querySelector('.goods__cards');
   var goodCardsEmpty = document.querySelector('.goods__card-empty');
@@ -121,7 +123,7 @@
   goodCardsEmpty.classList.add('visually-hidden');
   var goodOrder = document.querySelector('#card-order');
 
-  var goodsCard = getCandy(3);
+  var goodsCard = getRandomArr(candyCards, 3);
 
   function renderGoodCard(goodCard) {
     var cardElement = goodOrder.content.cloneNode(true);
@@ -133,10 +135,6 @@
     return cardElement;
   }
 
-  var goodsFragment = document.createDocumentFragment();
-  for (var e = 0; e < goodsCard.length; e++) {
-    goodsFragment.appendChild(renderGoodCard(goodsCard[e]));
-  }
-  goodCards.appendChild(goodsFragment);
+  appendFragment(goodsCard, goodCards);
 
 })();
