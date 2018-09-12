@@ -8,7 +8,7 @@
   catalogLoad.classList.add('visually-hidden');
 
   var CARD_ALL = 26;
-  var CARD_BASKET = 3;
+  // var CARD_BASKET = 1;
 
   var name = ['Чесночные сливки', 'Огуречный педант', 'Молочная хрюша', 'Грибной шейк', 'Баклажановое безумие', 'Паприколу итальяно', 'Нинзя-удар васаби', 'Хитрый баклажан', 'Горчичный вызов', 'Кедровая липучка', 'Корманный портвейн', 'Чилийский задира', 'Беконовый взрыв', 'Арахис vs виноград', 'Сельдерейная душа', 'Початок в бутылке', 'Чернющий мистер чеснок', 'Раша федераша', 'Кислая мина', 'Кукурузное утро', 'Икорный фуршет', 'Новогоднее настроение', 'С пивком потянет', 'Мисс креветка', 'Бесконечный взрыв', 'Невинные винные', 'Бельгийское пенное', 'Острый язычок'];
 
@@ -126,7 +126,7 @@
   goodCardsEmpty.classList.add('visually-hidden');
   var goodOrder = document.querySelector('#card-order');
 
-  var goodsCard = getRandomArr(candyCards, CARD_BASKET);
+  // var goodsCard = getRandomArr(candyCards, CARD_BASKET);
 
   function renderGoodCard(goodCard) {
     var cardElement = goodOrder.content.cloneNode(true);
@@ -138,6 +138,60 @@
     return cardElement;
   }
 
-  appendFragment(goodsCard, goodCards, renderGoodCard);
+  // appendFragment(goodsCard, goodCards, renderGoodCard);
+
+  // Добавление выбранного товара в избранное
+  var addButtons = document.querySelectorAll('.card__btn-favorite');
+
+  for (var i = 0; i < addButtons.length; i++) {
+    addButtons[i].addEventListener('click', function (evt) {
+      evt.preventDefault();
+      if (event.target.classList.contains('card__btn-favorite--selected')) {
+        event.target.classList.remove('card__btn-favorite--selected');
+      } else {
+        event.target.classList.add('card__btn-favorite--selected');
+      }
+    });
+  }
+
+  // добавление выбранного товара в корзину
+  var addCards = document.querySelectorAll('.card__btn');
+
+  for (var j = 0; j < addCards.length; j++) {
+    addCards[j].addEventListener('click', function (evt) {
+      evt.preventDefault();
+      goodCards.appendChild(renderGoodCard(candyCards[i]));
+    });
+  }
+
+  // удаление товара из корзины
+  // var closeCards = document.querySelectorAll('.card-order__close');
+
+  // for (var i = 0; i < closeCards.length; i++) {
+  //   closeCards[i].addEventListener('click', function (evt) {
+  //     evt.preventDefault();
+  //    });
+  //  }
+
+
+  // validation
+
+  var cardNumberInput = document.querySelector('#payment__card-number');
+
+  cardNumberInput.addEventListener('invalid', function () {
+
+  });
+
+  // function luhn(cardNumber) {
+  //   var arr = cardNumber.split('').map(function (char, index) {
+  //     var digit = parseInt(char);
+  //     if ((index + cardNumber.length) % 2 === 0) {
+  //       var digitX2 = digit * 2;
+  //       return digitX2 > 9 ? digitX2 - 9 : digitX2;
+  //     }
+  //     return digit;
+  //   });
+  //   return !(arr.reduce(function (a, b) { return a + b }, 0) % 10);
+  // }
 
 })();
