@@ -68,6 +68,7 @@
   }
 
   var candyCards = getCandy(CARD_ALL);
+  window.cards = candyCards;
 
   // создает карточку товара
   function renderCard(candyCard) {
@@ -146,10 +147,10 @@
   for (var i = 0; i < addButtons.length; i++) {
     addButtons[i].addEventListener('click', function (evt) {
       evt.preventDefault();
-      if (event.target.classList.contains('card__btn-favorite--selected')) {
-        event.target.classList.remove('card__btn-favorite--selected');
+      if (evt.target.classList.contains('card__btn-favorite--selected')) {
+        evt.target.classList.remove('card__btn-favorite--selected');
       } else {
-        event.target.classList.add('card__btn-favorite--selected');
+        evt.target.classList.add('card__btn-favorite--selected');
       }
     });
   }
@@ -157,22 +158,29 @@
   // добавление выбранного товара в корзину
   var addCards = document.querySelectorAll('.card__btn');
 
-  for (var j = 0; j < addCards.length; j++) {
-    addCards[j].addEventListener('click', function (evt) {
+  function addCardToBasket(goodIndex) {
+    addCards[goodIndex].addEventListener('click', function (evt) {
       evt.preventDefault();
-      goodCards.appendChild(renderGoodCard(candyCards[i]));
+      goodCards.appendChild(renderGoodCard(candyCards[goodIndex]));
     });
   }
+  for (var j = 0; j < addCards.length; j++) {
+    addCardToBasket(j);
+  }
+
 
   // удаление товара из корзины
-  // var closeCards = document.querySelectorAll('.card-order__close');
+  var closeCards = document.querySelectorAll('.card-order__close');
 
-  // for (var i = 0; i < closeCards.length; i++) {
-  //   closeCards[i].addEventListener('click', function (evt) {
-  //     evt.preventDefault();
-  //    });
-  //  }
-
+  function removeCardFromBasket(goodIndex) {
+    closeCards[goodIndex].addEventListener('click', function (evt) {
+      evt.preventDefault();
+      goodCards.removeChild(closeCards[goodIndex].parentElement);
+    });
+  }
+  for (var k = 0; k < closeCards.length; k++) {
+    removeCardFromBasket(k);
+  }
 
   // validation
 
