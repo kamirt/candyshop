@@ -162,6 +162,19 @@
     addCards[goodIndex].addEventListener('click', function (evt) {
       evt.preventDefault();
       goodCards.appendChild(renderGoodCard(candyCards[goodIndex]));
+
+      // удаление товара из корзины
+      var closeCards = document.querySelectorAll('.card-order__close');
+
+      function removeCardFromBasket(goodInd) {
+        closeCards[goodInd].addEventListener('click', function (e) {
+          e.preventDefault();
+          closeCards[goodInd].parentNode.remove();
+        });
+      }
+      for (var k = 0; k < closeCards.length; k++) {
+        removeCardFromBasket(k);
+      }
     });
   }
   for (var j = 0; j < addCards.length; j++) {
@@ -169,37 +182,45 @@
   }
 
 
-  // удаление товара из корзины
-  var closeCards = document.querySelectorAll('.card-order__close');
-
-  function removeCardFromBasket(goodIndex) {
-    closeCards[goodIndex].addEventListener('click', function (evt) {
-      evt.preventDefault();
-      goodCards.removeChild(closeCards[goodIndex].parentElement);
-    });
-  }
-  for (var k = 0; k < closeCards.length; k++) {
-    removeCardFromBasket(k);
-  }
-
   // validation
 
   var cardNumberInput = document.querySelector('#payment__card-number');
+  var wrapCardNumberInput = document.querySelector('.payment__input-wrap--card-number');
 
-  cardNumberInput.addEventListener('invalid', function () {
+  cardNumberInput.onfocus = function () {
+    var num = cardNumberInput.value;
 
-  });
+    function moon(cardNumber) {
 
-  // function luhn(cardNumber) {
-  //   var arr = cardNumber.split('').map(function (char, index) {
-  //     var digit = parseInt(char);
-  //     if ((index + cardNumber.length) % 2 === 0) {
-  //       var digitX2 = digit * 2;
-  //       return digitX2 > 9 ? digitX2 - 9 : digitX2;
-  //     }
-  //     return digit;
-  //   });
-  //   return !(arr.reduce(function (a, b) { return a + b }, 0) % 10);
-  // }
+      var arr = [];
+      cardNumber = cardNumber.toString();
+      for (var e = 0; e < cardNumber.length; e++) {
+        if (e % 2 === 0) {
+          var m = parseInt(cardNumber[e], 16) * 2;
+          if (m > 9) {
+            arr.push(m - 9);
+          } else {
+            arr.push(m);
+          }
+        } else {
+          var n = parseInt(cardNumber[e], 16);
+          arr.push(n);
+        }
+      }
+      var summ = arr.reduce(function (a, b) {
+        return a + b;
+      });
+      return Boolean(!(summ % 10));
+    }
+
+    if (!isNaN(num) && moon(num)) {
+      wrapCardNumberInput.classList.remove('text-input--error');
+      wrapCardNumberInput.classList.add('text-input--correct');
+    } else {
+      wrapCardNumberInput.classList.remove('text-input--correct');
+      wrapCardNumberInput.classList.add('text-input--error');
+    }
+
+  };
 
 })();
