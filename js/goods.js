@@ -62,13 +62,13 @@
           energy: Math.round(70 + (Math.random() * 500)),
           contents: getRandomArr(contents, Math.floor(Math.random() * contents.length)),
         },
+        orderedAmount: 1,
       });
     }
     return charArr;
   }
 
   var candyCards = getCandy(CARD_ALL);
-  window.cards = candyCards;
 
   // создает карточку товара
   function renderCard(candyCard) {
@@ -163,6 +163,18 @@
       evt.preventDefault();
       goodCards.appendChild(renderGoodCard(candyCards[goodIndex]));
 
+      // добавление уже существующего в корзине товара
+      var goodsCards = document.querySelectorAll('.goods_card');
+      function addSimilarCard(ind) {
+        var cardTitle = document.querySelector('.card-order__title');
+
+        console.log(cardTitle);
+      }
+      for (var e = 0; e < goodsCards.length; e++) {
+        addSimilarCard(e);
+      }
+
+
       // удаление товара из корзины
       var closeCards = document.querySelectorAll('.card-order__close');
 
@@ -187,7 +199,7 @@
   var cardNumberInput = document.querySelector('#payment__card-number');
   var wrapCardNumberInput = document.querySelector('.payment__input-wrap--card-number');
 
-  cardNumberInput.onfocus = function () {
+  cardNumberInput.onblur = function () {
     var num = cardNumberInput.value;
 
     function moon(cardNumber) {
